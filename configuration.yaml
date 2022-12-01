@@ -1,0 +1,21 @@
+Data:
+  path: /home/beiming/Desktop/UT_Voice/data_samples
+  out_path: Results
+
+Speaker_separation:
+  output_folder: speaker_separation
+  access_token: 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
+  speaker_num: 2
+  remove_clip_shorter_than:  0.5 # in seconds
+  begin_offset: 0.1
+  end_offset: 0.1
+  
+Word_recognition:
+  output_folder: recognized_word
+
+Phone_recognition:
+  output_folder: recognized_phone
+
+Phone_alignment:
+  use_recognized_label: True
+  output_folder: phone_label
