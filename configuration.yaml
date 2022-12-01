@@ -1,8 +1,8 @@
 Data:
-  path: /home/beiming/Desktop/UT_Voice/data_samples
+  path: /home/beiming/Desktop/UT_Voice/data_samples_16k
   out_path: Results
 
-Speaker_separation:
+Speaker_separation: # SPEAKER_00_01.wav, SPEAKER_01_02.wav
   output_folder: speaker_separation
   access_token: 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
   speaker_num: 2
@@ -11,11 +11,10 @@ Speaker_separation:
   end_offset: 0.1
   
 Word_recognition:
+  speaker: SPEAKER_01
   output_folder: recognized_word
 
-Phone_recognition:
-  output_folder: recognized_phone
-
 Phone_alignment:
+  speaker: SPEAKER_01
   use_recognized_label: True
   output_folder: phone_label
