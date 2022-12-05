@@ -31,10 +31,16 @@ def speaker_separation(args):
         if not os.path.exists(task_out_folder):
             os.makedirs(task_out_folder)
         clip_idx = {}
+        prev_speaker, prev_start = None, None
         for turn, _, speaker in diarization.itertracks(yield_label=True):
-        
             if turn.end - turn.start > duration_threshold:        
                 speaker_path = os.path.join(task_out_folder, speaker)
+                start, end = turn.start - begin_offset, turn.end + end_offset
+                if prev_speaker == None and prev_start == None:
+                    prev_speaker, prev_start = speaker, start
+                elif speaker == prev_speaker:
+                    start = prev_start
+
                 if not os.path.exists(speaker_path):
                     os.makedirs(speaker_path)
                 if speaker in clip_idx:
@@ -45,8 +51,9 @@ def speaker_separation(args):
                 clip_name = speaker + '_' + format(clip_idx[speaker], '02d') + '.wav'
                 clip_out_path = os.path.join(speaker_path, clip_name)             
                 _wav = AudioSegment.from_wav(wav_path)
-                _wav = _wav[(turn.start-begin_offset)*1000:(turn.end+end_offset)*1000]
+                _wav = _wav[start*1000:end*1000]
                 _wav.export(clip_out_path, format="wav")
+                prev_start = start
 
 
 if __name__ == '__main__':

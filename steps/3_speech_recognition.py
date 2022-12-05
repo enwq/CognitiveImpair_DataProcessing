@@ -24,7 +24,7 @@ def speech_recognition(args):
         wav_path_list = glob.glob(task_spk + '/*.wav')
         for wav_path in wav_path_list:    
             audio, _ = librosa.load(wav_path, sr=16000)
-            trans_path = wav_path[:-4] + '.wrd'
+            trans_path = wav_path[:-4] + '.txt'
 
             input_values = processor(audio, return_tensors="pt", padding="longest").input_values
             logits = model(input_values).logits 
