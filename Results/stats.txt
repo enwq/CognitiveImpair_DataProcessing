@@ -1,0 +1,12 @@
+The speaking rate of task: VSAT is 1.6157096694009447
+The speaking rate of task: VNT is 1.6118518518518519
+The speaking rate of task: AnimalFluencyTest is 1.207655270590259
+The speaking rate of task: StoryRecogTask is 3.1541218637992827
+The speaking rate of task: SpontanousSpeech is 2.0270910296485747
+The overall speaking rate is 2.2725181275745934
+The articulation rate of task: VSAT is 7.220446361604287
+The articulation rate of task: VNT is 7.026689342378731
+The articulation rate of task: AnimalFluencyTest is 4.714193706883388
+The articulation rate of task: StoryRecogTask is 7.9565202633330845
+The articulation rate of task: SpontanousSpeech is 7.959994293296387
+The overall articulation rate is 7.383619635986841
