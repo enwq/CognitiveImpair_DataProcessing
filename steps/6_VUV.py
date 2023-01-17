@@ -7,6 +7,9 @@ from datasets import load_dataset
 import torch
 import librosa
 import textgrid
+import pysptk
+from scipy.io import wavfile
+import numpy as np
 
 
 def VUV_stats(args):
@@ -25,6 +28,11 @@ def VUV_stats(args):
         task_spk_textgrid = task_spk_wrd + '_PHONE'
 
         txtgrid_path_list = glob.glob(task_spk_textgrid + '/*.TextGrid')
+        wav_path_list = glob.glob(task_spk_wrd + '/*.wav')
+        
+        txtgrid_path_list.sort()
+        wav_path_list.sort()
+        
         for i in range(len(txtgrid_path_list)):            
 
             tg = textgrid.TextGrid.fromFile(txtgrid_path_list[i])
@@ -33,7 +41,6 @@ def VUV_stats(args):
             ph_start, ph_end = [], []          
             for j in range(len(ph_tg)):           
                 _ph = ph_tg[j].mark
-                print(repr(_ph))
                 ph = ''.join([i for i in _ph if not i.isdigit()])
                 if _ph == '' or ph in UV_list:
                     ph_list.append('unvoiced')
@@ -60,7 +67,7 @@ def VUV_stats(args):
             f = open(txtgrid_path_list[i], 'a')
             f.write("    item [3]:\n")
             f.write("        class = \"IntervalTier\" \n")        
-            f.write("        name = \"words\" \n")
+            f.write("        name = \"vuv_asr\" \n")
             f.write("        xmin = 0 \n")
             f.write("        xmax = {} \n".format(str(vuv_end[-1])))      
             f.write("        intervals: size = {} \n".format(str(len(vuv_list))))   
@@ -69,7 +76,44 @@ def VUV_stats(args):
                 f.write("            xmin = {} \n".format(str(vuv_start[j])))
                 f.write("            xmax = {} \n".format(str(vuv_end[j]))) 
                 f.write("            text = \"{}\"\n".format(str(vuv_list[j])))                                         
-            f.close()                          
+            f.close()   
+                                 
+            fs, x = wavfile.read(wav_path_list[i])
+            assert fs == 16000
+            f0 = pysptk.rapt(x.astype(np.float32), fs=fs, hopsize=80, min=60, max=200, otype="f0")
+            ratio = 0.005
+            vuv_audio_list = []
+            vuv_audio_start_end = []
+
+            for j in range(len(f0)):
+                if j == 0:
+                    vuv_audio_start_end.append(j*ratio)
+                    if f0[j] == 0.0:
+                        vuv_audio_list.append('unvoiced')
+                    else:
+                        vuv_audio_list.append('voiced')
+                else:
+                    if f0[j-1] == 0.0 and f0[j] != 0.0:
+                        vuv_audio_start_end.append(j*ratio)
+                        vuv_audio_list.append('voiced') 
+                    if f0[j-1] != 0.0 and f0[j] == 0.0:
+                        vuv_audio_start_end.append(j*ratio)
+                        vuv_audio_list.append('unvoiced')  
+                        
+            vuv_audio_start_end.append(vuv_end[-1])
+            f = open(txtgrid_path_list[i], 'a')
+            f.write("    item [4]:\n")
+            f.write("        class = \"IntervalTier\" \n")        
+            f.write("        name = \"vuv_f0\" \n")
+            f.write("        xmin = 0 \n")
+            f.write("        xmax = {} \n".format(str(vuv_end[-1])))      
+            f.write("        intervals: size = {} \n".format(str(len(vuv_audio_list))))   
+            for j in range(len(vuv_audio_list)):
+                f.write("        intervals [{}]:\n".format(str(j+1)))    
+                f.write("            xmin = {} \n".format(str(vuv_audio_start_end[j])))
+                f.write("            xmax = {} \n".format(str(vuv_audio_start_end[j+1]))) 
+                f.write("            text = \"{}\"\n".format(str(vuv_audio_list[j])))                                         
+            f.close() 
  
 if __name__ == '__main__':
     import argparse
