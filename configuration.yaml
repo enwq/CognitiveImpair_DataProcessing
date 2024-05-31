@@ -1,10 +1,10 @@
 Data:
-  path: /home/beiming/Desktop/UT_Voice/data_samples_16k
-  out_path: Results
+  path: /home/ys22999@austin.utexas.edu/CognitiveImpair_DataProcessing/Data
+  out_path: Results_test
 
 Speaker_separation: # SPEAKER_00_01.wav, SPEAKER_01_02.wav
   output_folder: speaker_separation
-  access_token: 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
+  access_token: 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
   speaker_num: 2
   remove_clip_shorter_than:  0.5 # in seconds
   begin_offset: 0.0

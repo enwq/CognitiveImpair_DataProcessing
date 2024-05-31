@@ -1,7 +1,7 @@
 #!/bin/bash
 
-inpath=/home/beiming/Desktop/UT_Voice/data_samples
-outpath=/home/beiming/Desktop/UT_Voice/data_samples_16k
+inpath=/home/ys22999@austin.utexas.edu/CognitiveImpair_DataProcessing/Data
+outpath=/home/ys22999@austin.utexas.edu/CognitiveImpair_DataProcessing/Data_16k
 
 
 for f in $inpath/*.wav; do 

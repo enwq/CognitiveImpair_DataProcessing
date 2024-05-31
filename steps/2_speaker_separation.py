@@ -4,6 +4,7 @@ import os
 import glob
 from pyannote.audio import Pipeline
 from pydub import AudioSegment
+import torch
 
 def speaker_separation(args):
     config_path = args.conf_dir
