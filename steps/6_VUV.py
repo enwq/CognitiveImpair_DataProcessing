@@ -79,7 +79,7 @@ def VUV_stats(args):
             f.close()   
                                  
             fs, x = wavfile.read(wav_path_list[i])
-            assert fs == 16000
+            assert fs == 44100
             f0 = pysptk.rapt(x.astype(np.float32), fs=fs, hopsize=80, min=60, max=200, otype="f0")
             ratio = 0.005
             vuv_audio_list = []

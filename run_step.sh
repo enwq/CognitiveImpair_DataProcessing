@@ -15,6 +15,16 @@ echo "Now performing phoneme alignment based on the recognized labels."
 
 bash steps/4_phone_align.sh
 
+echo "Now computing stats."
+
+python3 steps/5_stats.py --conf_dir $conf_dir
+
+echo "Now computing VUV."
+
+python3 steps/6_VUV.py --conf_dir $conf_dir
+
 echo "Done! :)"
+
+
 
 

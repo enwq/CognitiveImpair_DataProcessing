@@ -4,20 +4,20 @@ Data:
 
 Speaker_separation: # SPEAKER_00_01.wav, SPEAKER_01_02.wav
   output_folder: speaker_separation
-  access_token: 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
+  access_token: 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
   speaker_num: 2
   remove_clip_shorter_than:  0.5 # in seconds
   begin_offset: 0.0
   end_offset: 0.0
   
 Word_recognition:
-  speaker: SPEAKER_01
+  speaker: SPEAKER_00
   output_folder: recognized_word
 
 Phone_alignment:
-  speaker: SPEAKER_01
+  speaker: SPEAKER_00
   use_recognized_label: True
   output_folder: phone_label
   
 Stats:
-  speaker: SPEAKER_01
+  speaker: SPEAKER_00
